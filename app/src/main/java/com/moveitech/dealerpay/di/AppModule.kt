@@ -7,6 +7,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.moveitech.dealerpay.database.DealerPayDB
+import com.moveitech.dealerpay.network.Api
+import com.moveitech.dealerpay.network.RetrofitClient
+import com.moveitech.dealerpay.util.DataStoreHelper
 import com.moveitech.dealerpay.util.DataStoreHelper.Companion.DATA_STORE_NAME
 import dagger.Module
 import dagger.Provides
@@ -30,6 +33,12 @@ object AppModule {
 
     @Provides
     fun provideTaskDao(db: DealerPayDB) = db.dbDao()
+
+    @Singleton
+    @Provides
+    fun provideRetrofit(@ApplicationContext context: Context,dataStoreHelper: DataStoreHelper):Api{
+        return RetrofitClient.getApi(dataStoreHelper)
+    }
 
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DATA_STORE_NAME)

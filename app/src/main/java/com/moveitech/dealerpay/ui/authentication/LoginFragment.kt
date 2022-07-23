@@ -5,11 +5,14 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.moveitech.dealerpay.dataModel.response.authentication.LoginResponse
 import com.moveitech.dealerpay.databinding.FragmentLoginBinding
 import com.moveitech.dealerpay.ui.BaseFragment
 import com.moveitech.dealerpay.util.DataStoreHelper
 import com.moveitech.dealerpay.viewModel.AuthenticationViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,19 +49,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }
 
             loginResponse.observe(viewLifecycleOwner){
-                if (it)
-                {
-                    loginResponse.value=false
-//                    moveToNextScreen(LoginFragmentDirections.actionFragmentToSecondGraph())
 
-                }
+                saveLoginResponseData(it)
             }
 
         }
 
     }
 
+    private fun saveLoginResponseData(it: LoginResponse?) {
 
+        lifecycleScope.launch {
+            dataStoreHelper.apply {
+                saveIsLogin(true)
+                it?.let { it1 -> saveToken(it1.refreshToken) }
+            }
+        }
+    }
 
 
     override fun btnListener() {

@@ -42,12 +42,12 @@ class MainActivity : AppCompatActivity() {
         // tO SHOW ACTIVITY ON FULL SCREEN //
 
         // tO SHOW ACTIVITY ON FULL SCREEN //
-        val w = window
-
-        w.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+//        val w = window
+//
+//        w.setFlags(
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//            WindowManager.LayoutParams.FLAG_FULLSCREEN
+//        )
 
 
         setSupportActionBar(binding.toolbar)

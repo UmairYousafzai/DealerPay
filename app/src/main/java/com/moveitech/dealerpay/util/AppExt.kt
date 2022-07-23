@@ -11,10 +11,13 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import com.google.android.material.snackbar.Snackbar
+import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -120,4 +123,36 @@ fun Fragment.closeKeyBoard() {
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+}
+fun stringToFormatDate(date: String?): String {
+    var date1: Date? = null
+    var formatDate = ""
+    try {
+
+        date1 = date?.let {
+            val array=it.split("+")
+            SimpleDateFormat("YYYY-MM-DD'T'hh:mm:ss").parse(array[0]) }
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+    val dateFormat: DateFormat = SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm aaa")
+    if (date1 != null) {
+        formatDate = dateFormat.format(date1)
+    }
+    return formatDate
+}
+
+fun SearchView.observer(callBack:(String)->Unit)
+{
+    this.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+        override fun onQueryTextSubmit(query: String?): Boolean {
+
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            newText?.let { callBack.invoke(it) }
+            return false
+        }
+    })
 }

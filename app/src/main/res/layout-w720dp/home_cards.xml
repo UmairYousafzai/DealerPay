@@ -4,6 +4,15 @@
     >
 
 
+    <data>
+        <import type="com.moveitech.dealerpay.util.AppExtKt"/>
+        <variable
+            name="viewModel"
+            type="com.moveitech.dealerpay.viewModel.HomeViewModel" />
+        <variable
+            name="model"
+            type="com.moveitech.dealerpay.dataModel.response.transaction.TransactionResponse" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +48,7 @@
                     android:fontFamily="@font/sfprotext_regular"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:background="@drawable/textview_bg"
-                    android:text="@string/user_name"
+                    android:text="@{model.customer.firstName,default=Name}"
                     android:textColor="@color/white"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +63,7 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:fontFamily="@font/sfprotext_regular"
                     android:gravity="center"
-                    android:text="@string/amount"
+                    android:text="@{String.valueOf(model.totalAmount)+'$',default=122344}"
                     android:textColor="@color/yellow"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:fontFamily="@font/sfprotext_regular"
-                    android:text="7 June 2022 at 3:20 PM"
+                    android:text="@{AppExtKt.stringToFormatDate(model.transactionDate),default=Date}"
                     android:textColor="@color/white"
                     android:textSize="22sp"
 
@@ -102,7 +111,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:fontFamily="@font/sfprotext_regular"
-                    android:text="Mastercard 2145"
+                    android:text="@{model.cardBrand +' '+ model.last4,default=CARD124}"
                     android:textSize="22sp"
 
                     android:textColor="@color/white"

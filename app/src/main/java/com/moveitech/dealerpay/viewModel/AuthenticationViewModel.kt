@@ -2,8 +2,13 @@ package com.moveitech.dealerpay.viewModel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.moveitech.dealerpay.dataModel.request.LoginRequest
+import com.moveitech.dealerpay.dataModel.response.authentication.LoginResponse
+import com.moveitech.dealerpay.network.ResultWrapper
 import com.moveitech.dealerpay.repository.ApiDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,7 +18,7 @@ class AuthenticationViewModel @Inject constructor(private val dataRepository: Ap
 
     val email: ObservableField<String> = ObservableField("")
     val passWord: ObservableField<String> = ObservableField("")
-    val loginResponse: MutableLiveData<Boolean> = MutableLiveData()
+    val loginResponse: MutableLiveData<LoginResponse> = MutableLiveData()
     val userNameError: MutableLiveData<Boolean> = MutableLiveData()
     val passwordError: MutableLiveData<Boolean> = MutableLiveData()
     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
@@ -23,7 +28,7 @@ class AuthenticationViewModel @Inject constructor(private val dataRepository: Ap
     fun onClick(key: Int) {
 
         if (validateFields()) {
-            loginResponse.value=true
+            login(LoginRequest(email.get(), passWord.get()?.trim()))
             userNameError.value = false
             passwordError.value = false
         } else {
@@ -48,25 +53,29 @@ class AuthenticationViewModel @Inject constructor(private val dataRepository: Ap
         return flag
     }
 
-//    private fun login() {
-//        viewModelScope.launch {
-//            showProgressBar(true)
-//            dataRepository.login(userName.get().toString(), passWord.get().toString())
-//                .let { response ->
-//                    showProgressBar(false)
-//
-//                    when (response) {
-//                        is ResultWrapper.Success -> {
-//                            if (response.value.Code == 200) {
-//                                loginResponse.value = response.value.Data
-//                            } else {
-//                                userNameError.value = true
-//                                userNameError.value = true
-//                            }
-//                        }
-//                        else -> handleErrorType(response)
-//                    }
-//                }
-//        }
-//    }
+    private fun login(loginRequest: LoginRequest) {
+        viewModelScope.launch {
+            showProgressBar(true)
+            dataRepository.login(loginRequest)
+                .let { response ->
+                    showProgressBar(false)
+
+                    when (response) {
+                        is ResultWrapper.Success -> {
+                                loginResponse.value = response.value
+
+                        }
+                        is ResultWrapper.GenericError ->
+                        {
+                            userNameError.value = true
+                            userNameError.value = true
+
+                        }
+                        else -> {
+                            handleErrorType(response)
+                        }
+                    }
+                }
+        }
+    }
 }
