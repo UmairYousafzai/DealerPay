@@ -159,6 +159,8 @@
                         android:layout_height="@dimen/_36sdp"
                         android:textColorHint="@color/white"
                         android:paddingStart="@dimen/_4sdp"
+                        android:inputType="numberDecimal"
+
                         android:textColor="@color/white"
                         android:fontFamily="@font/sfprotext_regular"
                         android:background="@drawable/edit_text_bg"
@@ -179,6 +181,7 @@
                         android:background="@drawable/edit_text_bg"
                         android:hint="@string/enter_pay_share_amount"
                         android:paddingStart="@dimen/_4sdp"
+                        android:inputType="numberDecimal"
                         android:textColor="@color/white"
                         android:fontFamily="@font/sfprotext_regular"
                         android:textColorHint="@color/white"

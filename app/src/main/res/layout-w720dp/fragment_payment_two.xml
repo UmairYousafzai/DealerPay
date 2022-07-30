@@ -284,6 +284,7 @@
 
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_process_sale"
                 android:layout_width="380dp"
                 android:layout_height="55dp"
                 android:layout_marginHorizontal="16dp"

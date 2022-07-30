@@ -9,6 +9,8 @@ import android.location.LocationManager
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -20,6 +22,7 @@ import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 fun View.hide()
@@ -155,4 +158,10 @@ fun SearchView.observer(callBack:(String)->Unit)
             return false
         }
     })
+}
+
+fun AutoCompleteTextView.setupAdapter(list:ArrayList<String>)
+{
+    val adapter = ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,list)
+    setAdapter(adapter)
 }

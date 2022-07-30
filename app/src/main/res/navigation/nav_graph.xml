@@ -65,5 +65,9 @@
         android:id="@+id/paymentReqTwoFragment"
         android:name="com.moveitech.dealerpay.ui.requestPayment.PaymentReqTwoFragment"
         android:label="Payment Request"
-        tools:layout="@layout/fragment_payment_request_two"/>
+        tools:layout="@layout/fragment_payment_request_two">
+        <argument
+            android:name="paymentRequestModel"
+            app:argType="com.moveitech.dealerpay.dataModel.request.payment.PaymentRequest" />
+    </fragment>
 </navigation>

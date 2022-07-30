@@ -29,15 +29,18 @@ open class LoginActivity : AppCompatActivity() {
     @Inject
     lateinit var dataStoreHelper: DataStoreHelper
     private val viewModel: AuthenticationViewModel by viewModels()
+    private var flag=true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
             dataStoreHelper.isLogin.collect {
-                if (it) {
+                if (it&&flag) {
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
+                }else{
+                    flag=false
                 }
             }
         }
@@ -77,12 +80,13 @@ open class LoginActivity : AppCompatActivity() {
                     DealerPayApplication.Token = loginResponse.jwtToken
                     saveRefreshToken(loginResponse.refreshToken)
                     DealerPayApplication.refreshToken = loginResponse.refreshToken
-                }
-                runOnUiThread {
+                    saveUserNAme(it.firstName+" "+it.lastName)
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
+
+
             }
         }
     }

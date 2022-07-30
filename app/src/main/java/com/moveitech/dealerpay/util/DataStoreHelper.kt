@@ -18,6 +18,18 @@ class DataStoreHelper @Inject constructor(private val dataStore: DataStore<Prefe
         preferences[IS_LOGIN] ?: false
     }
 
+    val token: Flow<String> = dataStore.data.map { preferences ->
+        preferences[TOKEN] ?: ""
+    }
+
+    val refreshToken: Flow<String> = dataStore.data.map { preferences ->
+        preferences[REFRESH_TOKEN] ?: ""
+    }
+
+    val userName: Flow<String> = dataStore.data.map { preferences ->
+        preferences[USERNAME] ?: ""
+
+    }
 
     suspend fun saveIsLogin(isLogin: Boolean) {
         dataStore.edit { preferences ->
@@ -25,9 +37,6 @@ class DataStoreHelper @Inject constructor(private val dataStore: DataStore<Prefe
         }
     }
 
-    val token: Flow<String> = dataStore.data.map { preferences ->
-        preferences[TOKEN] ?: ""
-    }
 
     suspend fun saveToken(token: String) {
         dataStore.edit { preferences ->
@@ -35,13 +44,16 @@ class DataStoreHelper @Inject constructor(private val dataStore: DataStore<Prefe
         }
     }
 
-    val refreshToken: Flow<String> = dataStore.data.map { preferences ->
-        preferences[REFRESH_TOKEN] ?: ""
-    }
-
     suspend fun saveRefreshToken(token: String) {
         dataStore.edit { preferences ->
             preferences[REFRESH_TOKEN] = token
+
+
+        }
+    }
+    suspend fun saveUserNAme(name: String) {
+        dataStore.edit { preferences ->
+            preferences[USERNAME] = name
 
 
         }
@@ -61,6 +73,7 @@ class DataStoreHelper @Inject constructor(private val dataStore: DataStore<Prefe
         val IS_LOGIN = booleanPreferencesKey(name = "isLogin")
         val TOKEN = stringPreferencesKey(name = "token")
         val REFRESH_TOKEN = stringPreferencesKey(name = "refresh_token")
+        val USERNAME = stringPreferencesKey(name = "refresh_token")
         const val DATA_STORE_NAME = "dealer_pay_datastore"
 
     }

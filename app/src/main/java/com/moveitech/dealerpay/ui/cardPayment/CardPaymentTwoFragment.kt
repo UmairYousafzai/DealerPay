@@ -1,9 +1,11 @@
 package com.moveitech.dealerpay.ui.cardPayment
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.moveitech.dealerpay.databinding.FragmentPaymentTwoBinding
 import com.moveitech.dealerpay.ui.BaseFragment
+import com.moveitech.dealerpay.ui.PaymentInte.PaymentInteActivity
 
 class CardPaymentTwoFragment: BaseFragment<FragmentPaymentTwoBinding>(){
     override fun initViews() {
@@ -19,5 +21,9 @@ class CardPaymentTwoFragment: BaseFragment<FragmentPaymentTwoBinding>(){
     }
 
     override fun btnListener() {
+        binding.btnProcessSale.setOnClickListener {
+            val intent = Intent(requireActivity(), PaymentInteActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

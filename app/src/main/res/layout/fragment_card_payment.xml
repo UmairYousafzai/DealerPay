@@ -67,9 +67,9 @@
                     android:id="@+id/et_select_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
+                    android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:paddingStart="@dimen/_6sdp"
+                    android:padding="10dp"
                     android:hint="@string/select_an_item"
                     android:textColorHint="@color/white"
                     android:textColor="@color/white" />

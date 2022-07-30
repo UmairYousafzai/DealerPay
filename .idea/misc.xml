@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/drawable-v24/rounded_corner.xml" value="0.176" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/drawable/app_logo.xml" value="0.1525" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/drawable/background_round_padded.xml" value="0.1315" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/drawable/blurback.xml" value="0.1315" />
@@ -16,20 +17,38 @@
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/drawable/new_blur_bg.xml" value="0.1315" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/drawable/profile_image_placholder.xml" value="0.1315" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/drawable/search_view_bg.xml" value="0.1315" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w600dp/fragment_card_payment.xml" value="0.3603515625" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w600dp/fragment_home.xml" value="0.32051282051282054" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w600dp/fragment_payment_request_one.xml" value="0.3603515625" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w600dp/fragment_payment_request_two.xml" value="0.17115027829313545" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w600dp/fragment_payment_two.xml" value="0.27003205128205127" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w600dp/fragment_settings.xml" value="0.32051282051282054" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w600dp/home_cards.xml" value="0.32051282051282054" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w720dp-land/fragment_id_tech_settings.xml" value="0.3455056179775281" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w720dp/fragment_card_payment.xml" value="0.3455056179775281" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w720dp/fragment_home.xml" value="0.3455056179775281" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w720dp/fragment_payment_request_one.xml" value="0.3455056179775281" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w720dp/fragment_payment_request_two.xml" value="0.2175" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w720dp/fragment_payment_two.xml" value="0.3455056179775281" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w720dp/fragment_settings.xml" value="0.3455056179775281" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout-w720dp/home_cards.xml" value="0.3455056179775281" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/activity_payment_inte.xml" value="0.46125" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/card_payment_popup.xml" value="0.46125" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_card_payment.xml" value="0.5" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_paymen_request_two.xml" value="0.46125" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_payment_request_one.xml" value="0.46125" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_payment_request_two.xml" value="0.5720930232558139" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_payment_two.xml" value="0.46125" />
-        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_settings.xml" value="0.46125" />
-        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/home_cards.xml" value="0.2835820895522388" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/fragment_settings.xml" value="0.5" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/home_cards.xml" value="0.67" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/navigation_drawer_header.xml" value="0.49" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/options_layout.xml" value="0.46125" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/layout/progress_dialog_layout.xml" value="0.17074275362318841" />
+        <entry key="..\:/Umair Data/DealerPay/app/src/main/res/menu-w600dp/mobile_navigation.xml" value="0.5" />
         <entry key="..\:/Umair Data/DealerPay/app/src/main/res/menu/nav_drawer_menu.xml" value="0.49" />
       </map>
     </option>

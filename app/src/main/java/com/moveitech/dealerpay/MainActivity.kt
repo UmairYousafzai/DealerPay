@@ -10,15 +10,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.moveitech.dealerpay.databinding.ActivityMainBinding
 import com.moveitech.dealerpay.databinding.NavigationDrawerHeaderBinding
+import com.moveitech.dealerpay.util.DataStoreHelper
 import com.moveitech.dealerpay.util.gone
 import com.moveitech.dealerpay.util.visible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -30,6 +35,9 @@ class MainActivity : AppCompatActivity() {
         const val  MY_PERMISSIONS_REQUEST_FINE_LOCATION = 3
     }
 
+
+    @Inject
+    lateinit var dataStoreHelper: DataStoreHelper
 
     lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
@@ -74,6 +82,11 @@ class MainActivity : AppCompatActivity() {
         val headerView: View = binding.navView.getHeaderView(0)
         val headerBinding: NavigationDrawerHeaderBinding =
             NavigationDrawerHeaderBinding.bind(headerView)
+        lifecycleScope.launch {
+            dataStoreHelper.userName.collect{
+                headerBinding.tvName.text = it
+            }
+        }
 
         headerBinding.parentLayout.setOnClickListener {
             navController.navigate(R.id.settingsFragment)
@@ -106,9 +119,6 @@ class MainActivity : AppCompatActivity() {
                     binding.toolbar.setNavigationIcon(R.drawable.ic_humburger_icon)
 
                 }
-//                R.id.loginFragment -> {
-//
-//                }
                 R.id.cardPaymentFragment -> {
                     binding.toolbar.setNavigationIcon(R.drawable.ic_humburger_icon)
                 }
@@ -149,24 +159,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-
-//    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        val i = Intent()
-//        when (item.itemId) {
-//            R.id.id_tech_integration -> {
-//                i.setClass(this, PaymentInteActivity::class.java)
-////                i.setClass(this, MainActivityIdTech::class.java)
-//                startActivity(i)
-//            }
-//
-//        }
-//        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
-//        drawerLayout.closeDrawer(GravityCompat.START)
-//        return true
-//    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -177,14 +169,12 @@ class MainActivity : AppCompatActivity() {
             MY_PERMISSIONS_REQUEST_BLUETOOTH -> {
 
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.size > 0
+                if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+
                 }
                 return
             }

@@ -1,5 +1,7 @@
 package com.moveitech.dealerpay.dataModel.response.transaction
 
+import com.moveitech.dealerpay.dataModel.general.Customer
+
 data class TransactionResponse(
     val authCode: String,
     val canVoid: Boolean,

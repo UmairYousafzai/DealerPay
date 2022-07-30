@@ -46,7 +46,7 @@ class AuthenticationViewModel @Inject constructor(private val dataRepository: Ap
         if (passWord.get()?.length ?: 0 == 0) {
             flag = false
         }
-        if (!email.get()?.matches(emailPattern.toRegex())!!)
+        if (!email.get()?.trim()?.matches(emailPattern.toRegex())!!)
         {
             flag=false
         }
