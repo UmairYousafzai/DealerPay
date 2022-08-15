@@ -1,36 +1,23 @@
 package com.moveitech.dealerpay.dataModel.request.payment
 
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
 import com.moveitech.dealerpay.dataModel.general.Customer
 import java.io.Serializable
 
- data class PaymentRequest(
-     val address1:  String="",
-     val address2:  String="",
-     val authOnly:  String="",
-     val city:  String="",
-     var customer: Customer ?= null,
-     val dealerId:  String="",
-     val departmentId:  String="",
-     val donationAmount:  String="",
-     val email:  String="",
-     val firstName:  String="",
+data class PaymentRequest(
 
-     val hasDonation:  String="",
-     val hasPayShare:  String="",
-     val lastName:  String="",
-     val payShareAmount:  String="",
-     val paymentId:  String="",
-     val phone:  String="",
-     val reference:  String="",
-     val safe:  String="",
-     val saleAmount:  String="",
-     val sendEmail:  String="",
-     val sendSMS:  String="",
-     val state:  String="",
-     val taxExempt:  String="",
-     val token:  String="",
-     val transactionTypeId:  String="",
-     val zipcode:  String=""
+     var customer: Customer ?= null,
+     var dealerId:  String="",
+     var departmentId:  String="",
+     val donationAmount:  Long=0,
+     val hasDonation:  Boolean=false,
+     var hasPayShare:  Boolean=false,
+     var payShareAmount:  Long=0,
+     var paymentId:  String="",
+     val reference:  String="xyz",
+     val safe:  Boolean=true,
+     var saleAmount:  Long=0,
+     var sendEmail:  Boolean=false,
+     var sendSMS:  Boolean=false,
+     val taxExempt:  Boolean=true,
+     var transactionTypeId:  String="",
  ):Serializable

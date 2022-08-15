@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/paymentInteFragment">
 
 <!--    <fragment-->
 <!--        android:id="@+id/loginFragment"-->
@@ -55,7 +55,17 @@
         android:id="@+id/cardPaymentFragmentTwo"
         android:name="com.moveitech.dealerpay.ui.cardPayment.CardPaymentTwoFragment"
         android:label="Card Payment"
-        tools:layout="@layout/fragment_payment_request_two" />
+        tools:layout="@layout/fragment_payment_request_two" >
+        <argument
+            android:name="model"
+            app:argType="com.moveitech.dealerpay.dataModel.request.cardPayment.CardPayment"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_cardPaymentFragmentTwo_to_paymentInteFragment"
+            app:destination="@id/paymentInteFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.moveitech.dealerpay.ui.SettingsFragment"
@@ -69,5 +79,15 @@
         <argument
             android:name="paymentRequestModel"
             app:argType="com.moveitech.dealerpay.dataModel.request.payment.PaymentRequest" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentInteFragment"
+        android:name="com.moveitech.dealerpay.ui.PaymentInte.PaymentInteFragment"
+        android:label="PaymentInteFragment"
+        tools:layout="@layout/activity_payment_inte">
+        <argument
+            android:name="model"
+            app:argType="com.moveitech.dealerpay.dataModel.request.cardPayment.CardPayment"
+  />
     </fragment>
 </navigation>

@@ -16,48 +16,48 @@
         android:background="@drawable/background">
 
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@android:color/transparent"
-            >
+<!--        <com.google.android.material.appbar.AppBarLayout-->
+<!--            android:id="@+id/app_bar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            >-->
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:titleTextColor="@color/white" />
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                android:id="@+id/toolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                app:titleTextColor="@color/white" />-->
 
-        </com.google.android.material.appbar.AppBarLayout>
+<!--        </com.google.android.material.appbar.AppBarLayout>-->
 
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_8sdp"
-            app:layout_constraintBottom_toBottomOf="@id/app_bar"
-            app:layout_constraintStart_toStartOf="@id/app_bar"
-            app:layout_constraintTop_toTopOf="@id/app_bar"
-            app:srcCompat="@drawable/ic_back_arr" />
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/back"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="@dimen/_8sdp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/app_bar"-->
+<!--            app:layout_constraintStart_toStartOf="@id/app_bar"-->
+<!--            app:layout_constraintTop_toTopOf="@id/app_bar"-->
+<!--            app:srcCompat="@drawable/ic_back_arr" />-->
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Card Payment"
-            android:gravity="center"
-            android:textSize="@dimen/_14ssp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/sfprotext_regular"
-            app:layout_constraintEnd_toEndOf="@id/app_bar"
-            app:layout_constraintBottom_toBottomOf="@id/back"
-            app:layout_constraintStart_toStartOf="@id/app_bar"
-            app:layout_constraintTop_toTopOf="@+id/back" />
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Card Payment"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="@dimen/_14ssp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:fontFamily="@font/sfprotext_regular"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/app_bar"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/back"-->
+<!--            app:layout_constraintStart_toStartOf="@id/app_bar"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/back" />-->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/amount_card"
@@ -66,9 +66,9 @@
             app:cardCornerRadius="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"
             app:cardBackgroundColor="@color/clearentGreen_trans"
-            app:layout_constraintEnd_toEndOf="@id/app_bar"
-            app:layout_constraintStart_toStartOf="@id/app_bar"
-            app:layout_constraintTop_toBottomOf="@id/app_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             >
 
             <androidx.appcompat.widget.AppCompatTextView

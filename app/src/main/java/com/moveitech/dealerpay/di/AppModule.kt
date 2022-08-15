@@ -27,7 +27,7 @@ object AppModule {
     @Singleton
     fun provideDatabase(
         app: Application,
-    ) = Room.databaseBuilder(app, DealerPayDB::class.java, "EasyPosDB")
+    ) = Room.databaseBuilder(app, DealerPayDB::class.java, "DealerPayDB")
         .fallbackToDestructiveMigration()
         .build()
 

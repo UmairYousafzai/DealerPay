@@ -147,7 +147,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_9sdp"
-                            android:text="@{model.firstName+' '+model.lastName}"
                             android:textColor="@color/white"
                             android:textSize="22sp"
                             app:layout_constraintLeft_toLeftOf="@id/tv_fullNAme_tag"
@@ -189,11 +188,10 @@
                             app:layout_constraintTop_toTopOf="@id/tv_dealerShiip_tag" />
 
                         <TextView
-                            android:id="@+id/tv_mobile_ford"
+                            android:id="@+id/tv_dealer_ship"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_9sdp"
-                            android:text="@{model.groupName}"
                             android:textColor="@color/white"
                             android:textSize="22sp"
                             app:layout_constraintLeft_toLeftOf="@id/tv_fullNAme_tag"
@@ -211,7 +209,7 @@
                             android:textColor="@color/grey_text"
                             android:textSize="22sp"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_ford" />
+                            app:layout_constraintTop_toBottomOf="@+id/tv_dealer_ship" />
 
                         <TextView
                             android:id="@+id/active_entreprise"
@@ -232,7 +230,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:background="#1a3153"
-                            app:layout_constraintTop_toBottomOf="@id/tv_mobile_ford" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_dealer_ship" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

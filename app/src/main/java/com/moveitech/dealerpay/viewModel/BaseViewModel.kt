@@ -7,15 +7,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-open class BaseViewModel @Inject constructor() :ViewModel(){
+open class BaseViewModel @Inject constructor() : ViewModel() {
 
-     val dialogMessage = MutableLiveData<String>()
+    val dialogMessage = MutableLiveData<String>()
     val progressBar = MutableLiveData<Boolean>()
+    val sessionExpire = MutableLiveData<Boolean>()
 
     protected fun showDialogMessage(message: String) {
         dialogMessage.value = message
     }
-
 
 
     protected fun showProgressBar(show: Boolean) {
@@ -28,8 +28,19 @@ open class BaseViewModel @Inject constructor() :ViewModel(){
             is ResultWrapper.NetworkError ->
                 showDialogMessage("Internet not available")
 
-            is ResultWrapper.GenericError ->
-                showDialogMessage("" + error.error?.message)
+            is ResultWrapper.GenericError -> {
+                if (error.code==401)
+                {
+                    sessionExpire.value=true
+                }
+                if (error.error?.message?.isEmpty() == true) {
+                    showDialogMessage("${error.code} Server Error")
+
+                } else {
+                    showDialogMessage("" + error.error?.message)
+                }
+            }
+
         }
     }
 }

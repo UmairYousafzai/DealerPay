@@ -1,6 +1,7 @@
 package com.moveitech.dealerpay.network
 
 import com.moveitech.dealerpay.dataModel.request.LoginRequest
+import com.moveitech.dealerpay.dataModel.request.cardPayment.CardPayment
 import com.moveitech.dealerpay.dataModel.request.payment.PaymentRequest
 import com.moveitech.dealerpay.dataModel.response.BaseResponse
 import com.moveitech.dealerpay.dataModel.response.authentication.LoginResponse
@@ -8,6 +9,7 @@ import com.moveitech.dealerpay.dataModel.response.transaction.TransactionRespons
 import com.moveitech.dealerpay.dataModel.response.user.UserResponse
 import com.moveitech.dealerpay.util.Constants.Companion.LOGIN
 import com.moveitech.dealerpay.util.Constants.Companion.LOGOUT
+import com.moveitech.dealerpay.util.Constants.Companion.PAYMENT
 import com.moveitech.dealerpay.util.Constants.Companion.PAYMENT_REQUEST
 import com.moveitech.dealerpay.util.Constants.Companion.REFRESH_TOKEN
 import com.moveitech.dealerpay.util.Constants.Companion.TRANSACTIONS
@@ -42,6 +44,9 @@ interface Api {
 
     @POST(PAYMENT_REQUEST)
     suspend fun paymentRequest(@Body paymentRequest: PaymentRequest):String
+
+   @POST(PAYMENT)
+    suspend fun cardPayment(@Body cardPayment: CardPayment):String
 
 
 }

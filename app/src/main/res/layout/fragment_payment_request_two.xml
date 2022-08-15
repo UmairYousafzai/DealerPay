@@ -64,6 +64,7 @@
                         android:maxLines="1"
                         android:hint="Enter first name"
                         android:textColorHint="@color/white"
+                        android:selectAllOnFocus="true"
                         android:text="@={viewModel.customer.firstName}"
                         android:textColor="@color/white" />
 
@@ -103,6 +104,8 @@
                         android:text="@={viewModel.customer.lastName}"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
+                        android:selectAllOnFocus="true"
+
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
 
@@ -140,6 +143,8 @@
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:hint="Enter address"
+                        android:selectAllOnFocus="true"
+
                         android:text="@={viewModel.customer.address1}"
                         android:textColorHint="@color/white"
                         android:textColor="@color/white" />
@@ -178,6 +183,8 @@
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:hint="Enter Address"
+                        android:selectAllOnFocus="true"
+
                         android:text="@={viewModel.customer.address2}"
                         android:textColorHint="@color/white"
                         android:textColor="@color/white" />
@@ -215,6 +222,8 @@
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:hint="Enter city"
+                        android:selectAllOnFocus="true"
+
                         android:text="@={viewModel.customer.city}"
 
                         android:textColorHint="@color/white"
@@ -254,6 +263,8 @@
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:hint="enter state"
+                        android:selectAllOnFocus="true"
+
                         android:text="@={viewModel.customer.state}"
 
                         android:textColorHint="@color/white"
@@ -292,8 +303,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Enter zipcode"
-                        android:text="@={viewModel.customer.zipcode}"
+                        android:text="@={viewModel.customer.zip}"
                         android:inputType="textEmailAddress"
+                        android:selectAllOnFocus="true"
 
                         android:maxLines="1"
                         android:textColor="@color/white"
@@ -335,6 +347,7 @@
                         android:maxLines="1"
                         android:hint="xyz@email.com"
                         android:text="@={viewModel.customer.email}"
+                        android:selectAllOnFocus="true"
 
                         android:textColorHint="@color/white"
                         android:textColor="@color/white" />
@@ -372,7 +385,7 @@
                         android:layout_height="wrap_content"
                         android:hint="111 111 111"
                         android:text="@={viewModel.customer.phoneNumber}"
-
+                        android:selectAllOnFocus="true"
                         android:inputType="phone"
                         android:maxLines="1"
                         android:textColor="@color/white"

@@ -1,5 +1,6 @@
 package com.moveitech.dealerpay.repository
 
+import com.moveitech.dealerpay.dataModel.response.user.Department
 import com.moveitech.dealerpay.database.AppDao
 import javax.inject.Inject
 
@@ -11,6 +12,7 @@ class DBDataRepository @Inject constructor(private var dao: AppDao) {
 //        return  dao.getLocations().asLiveData()
 //    }
 
-//    suspend fun saveLocation(location: Location)=dao.insertLocation(location)
-//    suspend fun saveAttendance(attendance: Attendance)=dao.insertAttendance(attendance)
+    suspend fun saveDepartment(department: ArrayList<Department>)=dao.insertDepartment( department )
+    suspend fun deleteDepartment()=dao.deleteDepartment()
+     fun getDepartments()=dao.getDepartments()
 }

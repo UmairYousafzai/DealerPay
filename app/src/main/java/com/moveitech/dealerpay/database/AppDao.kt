@@ -1,23 +1,28 @@
 package com.moveitech.dealerpay.database
 
-import androidx.room.Dao
+import android.location.Location
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.room.*
+import com.moveitech.dealerpay.dataModel.response.user.Department
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppDao {
 
-    // ====================================== Location =================================
+     //====================================== Location =================================
 
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insertLocation(location:Location)
-//
-//    @Delete
-//    suspend fun deleteLocation(location: Location)
-//
-//    @Query("Delete from location")
-//    suspend fun deleteLocations()
-//
-//    @Query("select *from location")
-//     fun getLocations():Flow<List<Location>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDepartment(department:ArrayList<Department>)
+
+    @Delete
+    suspend fun deleteDepartment(department: Department)
+
+    @Query("Delete from department")
+    suspend fun deleteDepartment()
+
+    @Query("select *from department")
+    fun getDepartments(): LiveData<List<Department>>
 
 
 

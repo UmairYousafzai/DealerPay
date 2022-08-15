@@ -104,7 +104,8 @@ class MainActivity : AppCompatActivity() {
             AppBarConfiguration.Builder(
                 R.id.homeFragment,
                 R.id.cardPaymentFragment,
-                R.id.paymentRequestOne
+                R.id.paymentRequestOne,
+                R.id.paymentInteFragment
             )
                 .setOpenableLayout(binding.drawerLayout)
                 .build()
@@ -123,6 +124,9 @@ class MainActivity : AppCompatActivity() {
                     binding.toolbar.setNavigationIcon(R.drawable.ic_humburger_icon)
                 }
                 R.id.paymentRequestOne -> {
+                    binding.toolbar.setNavigationIcon(R.drawable.ic_humburger_icon)
+                }
+                R.id.paymentInteFragment -> {
                     binding.toolbar.setNavigationIcon(R.drawable.ic_humburger_icon)
                 }
                 R.id.cardPaymentFragmentTwo -> {

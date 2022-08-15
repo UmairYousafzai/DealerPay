@@ -1,36 +1,40 @@
 package com.moveitech.dealerpay.ui.PaymentInte;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.clearent.idtech.android.PublicOnReceiverListener;
 import com.clearent.idtech.android.domain.CardProcessingResponse;
 import com.clearent.idtech.android.domain.ClearentPaymentRequest;
 import com.clearent.idtech.android.family.HasManualTokenizingSupport;
 import com.clearent.idtech.android.token.domain.TransactionToken;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.idtechproducts.device.Common;
 import com.idtechproducts.device.ErrorCode;
@@ -57,18 +61,23 @@ import com.moveitech.dealerpay.IDTECHPack.reader.blutooth.BluetoothScanListener;
 import com.moveitech.dealerpay.IDTECHPack.reader.blutooth.BluetoothScanMessage;
 import com.moveitech.dealerpay.MainActivity;
 import com.moveitech.dealerpay.R;
+import com.moveitech.dealerpay.dataModel.request.cardPayment.CardPayment;
 import com.moveitech.dealerpay.ui.BottomSheetS.BottomSheetAmountFragment;
+import com.moveitech.dealerpay.ui.cardPayment.CardPaymentTwoFragment;
+import com.moveitech.dealerpay.viewModel.CardPaymentViewModel;
 
-public class PaymentInteActivity extends AppCompatActivity implements BottomSheetAmountFragment.OnBottomSheetClick, BluetoothScanListener, PublicOnReceiverListener, HasManualTokenizingSupport {
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
+public class PaymentInteFragment extends Fragment implements BottomSheetAmountFragment.OnBottomSheetClick, BluetoothScanListener, PublicOnReceiverListener, HasManualTokenizingSupport {
     private Toolbar toolbar;
     private AppCompatImageView backImg;
     private CardView amountCard;
     private AppCompatTextView amountTxt;
     private BottomSheetAmountFragment bottomSheetAmountFragment;
     private String oldAmountReal;
-    private String oldAmountToShow;
-    private AppCompatButton payBtn,cnclBtn;
+    private String oldAmountToShow="0.0";
+    private AppCompatButton payBtn, cnclBtn;
     private PaymentViewModel paymentViewModel;
     private SettingsViewModel settingsViewModel;
     private AppCompatTextView connectionTxt;
@@ -102,26 +111,34 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
     private boolean okayToConfigure = false;
     private boolean configuring = false;
+    private CardPayment cardPayment;
+    private CardPaymentViewModel cardPaymentViewModel;
 //    private AlertDialog configurationDialog;
 
     private String info = "";
 
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        return inflater.inflate(R.layout.activity_payment_inte, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment_inte);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // tO SHOW ACTIVITY ON FULL SCREEN //
-        Window w = getWindow();
-        w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        Window w = getWindow();
+//        w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-        bluetoothLeService = new BluetoothLeService(PaymentInteActivity.this, Constants.BLUETOOTH_SCAN_PERIOD);
+        bluetoothLeService = new BluetoothLeService(this, Constants.BLUETOOTH_SCAN_PERIOD);
 
-        paymentViewModel = ViewModelProviders.of(PaymentInteActivity.this).get(PaymentViewModel.class);
-        settingsViewModel = ViewModelProviders.of(PaymentInteActivity.this).get(SettingsViewModel.class);
+        paymentViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
+        settingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
+        cardPaymentViewModel = new ViewModelProvider(this).get(CardPaymentViewModel.class);
 
         settingsViewModel.getEnableContactless().setValue(true);
 
@@ -133,11 +150,11 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
             manualEntryService = ManualEntryService.getInstance(this);
         }
 
-        connectionTxt = findViewById(R.id.connected_txt);
-        lastFiveDigitEdit = findViewById(R.id.et_five_digit);
+        connectionTxt = view.findViewById(R.id.connected_txt);
+        lastFiveDigitEdit = view.findViewById(R.id.et_five_digit);
 
-        oldAmountReal =  paymentViewModel.getPaymentAmount().getValue();
-        oldAmountToShow = "Total Amount : $" + oldAmountReal;
+//        oldAmountReal =  paymentViewModel.getPaymentAmount().getValue();
+//        oldAmountToShow = "Total Amount : $" + oldAmountReal;
 
         initializeReader();
 
@@ -149,91 +166,79 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
         layoutInflater = getLayoutInflater();
 
 
-        toolbar = findViewById(R.id.toolbar);
+//        toolbar = view.findViewById(R.id.toolbar);
 
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        requireActivity().setSupportActionBar(toolbar);
+//        requireActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
+//
+
+        if (getArguments() != null && getArguments().get("cardPayment") != null) {
 
 
+            cardPayment = getArguments().getParcelable("cardPayment");
+            if (cardPayment != null) {
+                int total = cardPayment.getSaleAmount() + cardPayment.getPayShareAmount();
+                oldAmountToShow = "Total Amount : $" + total;
+                paymentViewModel.getPaymentAmount().setValue(String.valueOf(total));
 
-        amountCard = findViewById(R.id.amount_card);
+            }else
+            {
+                oldAmountToShow = "Total Amount : $0.0" +
+                        "" ;
 
-        amountTxt = findViewById(R.id.amount_txt);
+            }
+        }
+        amountCard = view.findViewById(R.id.amount_card);
 
-        amountTxt.setText(oldAmountToShow);
+        amountTxt = view.findViewById(R.id.amount_txt);
 
-        backImg = findViewById(R.id.back);
+        amountTxt.setText("Total Amount : $"+oldAmountToShow);
 
-        payBtn = findViewById(R.id.pay_btn);
-        cnclBtn = findViewById(R.id.cancel_btn);
+        backImg = view.findViewById(R.id.back);
 
-//        toolbar.setOnClickListener(new View.OnClickListener() {
+        payBtn = view.findViewById(R.id.pay_btn);
+        cnclBtn = view.findViewById(R.id.cancel_btn);
+
+
+//        amountCard.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //
-//                Intent backIntent = new Intent(PaymentInteActivity.this, MainActivity.class);
-//                backIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(backIntent);
-//                finish();
+//                oldAmountToShow = amountTxt.getText().toString().trim();
+//
+//                bottomSheetAmountFragment = new BottomSheetAmountFragment();
+//                bottomSheetAmountFragment.show(requireActivity().getSupportFragmentManager(), bottomSheetAmountFragment.getTag());
+//                bottomSheetAmountFragment.setOnBottomSheetClick(PaymentInteFragment.this);
+//
+//
 //
 //            }
 //        });
 
-        backImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                Intent backIntent = new Intent(PaymentInteActivity.this, MainActivity.class);
-                backIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(backIntent);
-                finish();
-            }
-        });
-
-
-
-        amountCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                oldAmountToShow = amountTxt.getText().toString().trim();
-
-                bottomSheetAmountFragment = new BottomSheetAmountFragment();
-                bottomSheetAmountFragment.show(getSupportFragmentManager(), bottomSheetAmountFragment.getTag());
-                bottomSheetAmountFragment.setOnBottomSheetClick(PaymentInteActivity.this);
-
-
-
-            }
-        });
-
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String s = lastFiveDigitEdit.getText().toString().trim();
 
                 oldAmountToShow = amountTxt.getText().toString().trim();
 
 
-                if (TextUtils.isEmpty(amountTxt.getText().toString().trim())){
+                if (TextUtils.isEmpty(amountTxt.getText().toString().trim())) {
 
-                    Toast.makeText(PaymentInteActivity.this, "Amount is missing", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Amount is missing", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (TextUtils.isEmpty(s)){
-                    Toast.makeText(PaymentInteActivity.this, "Last five digits of bluetooth reader are missing", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(s)) {
+                    Toast.makeText(requireContext(), "Last five digits of bluetooth reader are missing", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
 
 
                 last5OfBluetoothReader = s;
                 settingsViewModel.getLast5OfBluetoothReader().setValue(s);
                 Common.setBLEDeviceName(s);
-                LocalCache.setSelectedBluetoothDeviceLast5(getApplicationContext(), last5OfBluetoothReader);
+                LocalCache.setSelectedBluetoothDeviceLast5(requireContext(), last5OfBluetoothReader);
 
 
                 // start doing transaction here //
@@ -261,7 +266,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
                     String amount = paymentViewModel.getPaymentAmount().getValue();
 
                     if (amount == null || "".equals(amount)) {
-                        Toast.makeText(PaymentInteActivity.this, "Amount Required", Toast.LENGTH_LONG).show();
+                        Toast.makeText(requireContext(), "Amount Required", Toast.LENGTH_LONG).show();
                     } else {
                         handler.post(doSwipeProgressBar);
                     }
@@ -275,15 +280,15 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
                         System.out.println("DEVICE DISSCONNECTED ELSE IF: " + last5OfBluetoothReader + " Sett:" + settingsViewModel.getLast5OfBluetoothReader().getValue());
                         bluetoothLeService.scan(Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader);
-                        Toast.makeText(PaymentInteActivity.this, "Connecting Bluetooth Reader Ending In " + last5OfBluetoothReader, Toast.LENGTH_LONG).show();
+                        Toast.makeText(requireContext(), "Connecting Bluetooth Reader Ending In " + last5OfBluetoothReader, Toast.LENGTH_LONG).show();
 
                     } else if (settingsAudioJackReader) {
                         handler.post(doRegisterListen);
                         cardReaderService.device_configurePeripheralAndConnect();
-                        Toast.makeText(PaymentInteActivity.this, "Connecting Audio Jack Reader", Toast.LENGTH_LONG).show();
+                        Toast.makeText(requireContext(), "Connecting Audio Jack Reader", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(PaymentInteActivity.this, "Connect Reader First", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Connect Reader First", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -296,7 +301,12 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
                 // cancel the transaction here //
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setDefaultUi();
     }
 
     @Override
@@ -309,13 +319,13 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
         }
 
-        if (TextUtils.isEmpty(editVal)){
+        if (TextUtils.isEmpty(editVal)) {
 
             // set old value //
             paymentViewModel.getPaymentAmount().setValue(oldAmountReal);
             amountTxt.setText(oldAmountToShow);
 
-        }else{
+        } else {
 
             // set new One
             oldAmountReal = editVal;
@@ -349,60 +359,60 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
     private void observeConfigurationValues() {
 
-        settingsViewModel.getProdEnvironment().observe(PaymentInteActivity.this, new Observer<Integer>() {
+        settingsViewModel.getProdEnvironment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer onOff) {
                 settingsProdEnvironment = onOff == 0 ? false : true;
             }
         });
 
-        settingsViewModel.getBluetoothReader().observe(PaymentInteActivity.this, new Observer<Integer>() {
+        settingsViewModel.getBluetoothReader().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer onOff) {
                 settingsBluetoothReader = onOff == 0 ? false : true;
-                LocalCache.setBluetoothReaderValue(getApplicationContext(), onOff);
+                LocalCache.setBluetoothReaderValue(requireContext(), onOff);
             }
         });
 
-        settingsViewModel.getAudioJackReader().observe(PaymentInteActivity.this, new Observer<Integer>() {
+        settingsViewModel.getAudioJackReader().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer onOff) {
                 settingsAudioJackReader = onOff == 0 ? false : true;
             }
         });
-        settingsViewModel.getEnableContactless().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getEnableContactless().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 enableContactless = enabled;
             }
         });
-        settingsViewModel.getEnable2In1Mode().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getEnable2In1Mode().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 enable2In1Mode = enabled;
             }
         });
-        settingsViewModel.getEnableContactless().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getEnableContactless().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 enableContactless = enabled;
             }
         });
-        settingsViewModel.getEnable2In1Mode().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getEnable2In1Mode().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 enable2In1Mode = enabled;
             }
         });
 
-        settingsViewModel.getClearContactlessConfigurationCache().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getClearContactlessConfigurationCache().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 clearContactlessCache = enabled;
             }
         });
 
-        settingsViewModel.getLast5OfBluetoothReader().observe(PaymentInteActivity.this, new Observer<String>() {
+        settingsViewModel.getLast5OfBluetoothReader().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 last5OfBluetoothReader = s;
@@ -455,7 +465,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
         System.out.println("BLUTOOTHSCAN MESSAGE: " + bluetoothScanMessage);
 
-        if(!BluetoothScanMessage.SCAN_STOPPED.equals(bluetoothScanMessage)) {
+        if (!BluetoothScanMessage.SCAN_STOPPED.equals(bluetoothScanMessage)) {
             addPopupMessage(transactionAlertDialog, bluetoothScanMessage.getDisplayMessage());
         }
     }
@@ -477,11 +487,10 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
                 }
                 handler.post(doStartTransaction);
             } else {
-                Toast.makeText(PaymentInteActivity.this, "Connect Reader First", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), "Connect Reader First", Toast.LENGTH_LONG).show();
             }
         }
     };
-
 
 
     private Runnable doStartTransaction = new Runnable() {
@@ -541,11 +550,11 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
             publicKey = Constants.PROD_PUBLIC_KEY;
         }
 
-        cardReaderService = new CardReaderService(device_type, this, PaymentInteActivity.this, baseUrl, publicKey, true);
+        cardReaderService = new CardReaderService(device_type, this, requireContext(), baseUrl, publicKey, true);
 
         boolean device_setDeviceTypeResponse = cardReaderService.device_setDeviceType(device_type);
         if (!device_setDeviceTypeResponse) {
-            Toast.makeText(PaymentInteActivity.this, "Issue setting device type", Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "Issue setting device type", Toast.LENGTH_LONG).show();
         }
         cardReaderService.setContactlessConfiguration(false);
         cardReaderService.setContactless(enableContactless);
@@ -568,7 +577,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
 //    private void addPopupMessageConfig(AlertDialog alertDialog, String message) {
 //        if (alertDialog != null && alertDialog.isShowing()) {
-//            TextView textView = (TextView) alertDialog.findViewById(R.id.popupMessages);
+//            TextView textView = (TextView) alertDialog.view.findViewById(R.id.popupMessages);
 //            if (textView == null) {
 //                return;
 //            }
@@ -590,7 +599,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 //    private void closePopupConfig() {
 //        if (configurationDialog != null) {
 //            configurationDialog.hide();
-//            TextView textView = (TextView) configurationDialog.findViewById(R.id.popupMessages);
+//            TextView textView = (TextView) configurationDialog.view.findViewById(R.id.popupMessages);
 //            if (textView != null) {
 //                textView.setText("");
 //            }
@@ -598,9 +607,8 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 //    }
 
 
-
     private void displayTransactionPopup() {
-        runOnUiThread(new Runnable() {
+        requireActivity().runOnUiThread(new Runnable() {
             public void run() {
                 if (transactionAlertDialog != null) {
 
@@ -618,7 +626,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
                     System.out.println("TRANSACTION DIALOG IS NULL ELSE");
 
-                    AlertDialog.Builder transactionViewBuilder = new AlertDialog.Builder(PaymentInteActivity.this);
+                    AlertDialog.Builder transactionViewBuilder = new AlertDialog.Builder(requireContext());
 
                     System.out.println("RUNNING MANUAL ENTERY: " + runningManualEntry);
 
@@ -648,8 +656,8 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
                     transactionAlertDialog = transactionViewBuilder.create();
                     transactionAlertDialog.show();
                 }
-                if(!cardReaderService.device_isConnected()) {
-                    addPopupMessage(transactionAlertDialog,"Press button on reader");
+                if (!cardReaderService.device_isConnected()) {
+                    addPopupMessage(transactionAlertDialog, "Press button on reader");
                 }
             }
         });
@@ -671,7 +679,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
 
     private void updateReaderConnected(final String message) {
-        PaymentInteActivity.this.runOnUiThread(new Runnable() {
+        requireActivity().runOnUiThread(new Runnable() {
             public void run() {
                 if (transactionAlertDialog != null && transactionAlertDialog.isShowing()) {
                     addPopupMessage(transactionAlertDialog, "Bluetooth disconnected. Press button on reader.");
@@ -683,7 +691,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
         releaseSDK();
@@ -692,7 +700,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
 
         if (cardReaderService != null) {
             cardReaderService.unregisterListen();
@@ -706,17 +714,17 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
         if (!configuring) {
             if (okayToConfigure) {
-                Toast.makeText(PaymentInteActivity.this, "\uD83D\uDED1 Applying Configuration \uD83D\uDED1️", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), "\uD83D\uDED1 Applying Configuration \uD83D\uDED1️", Toast.LENGTH_LONG).show();
                 applyConfiguration();
             } else {
-                Toast.makeText(PaymentInteActivity.this, "Configuration Not Applied", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), "Configuration Not Applied", Toast.LENGTH_LONG).show();
             }
         } else {
             if (transactionAlertDialog != null && transactionAlertDialog.isShowing()) {
 //                closePopup();
             }
             cardReaderService.addRemoteLogRequest(Constants.getSoftwareTypeAndVersion(), "Configuration applied to reader " + cardReaderService.getStoredDeviceSerialNumberOfConfiguredReader());
-            Toast.makeText(PaymentInteActivity.this, "\uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 Configuration Applied \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28", Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), "\uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 Configuration Applied \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28 \uD83D\uDC28", Toast.LENGTH_LONG).show();
         }
 
         if (cardReaderService.device_isConnected()) {
@@ -729,7 +737,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
                 String amount = paymentViewModel.getPaymentAmount().getValue();
                 if (amount == null || "".equals(amount)) {
                     closePopup();
-                    Toast.makeText(PaymentInteActivity.this, "Amount Required", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Amount Required", Toast.LENGTH_LONG).show();
                     return;
                 } else {
                     handler.post(doStartTransaction);
@@ -737,7 +745,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
             } else if (!isReady && transactionAlertDialog != null && !transactionAlertDialog.isShowing()) {
                 String amount = paymentViewModel.getPaymentAmount().getValue();
                 if (amount == null || "".equals(amount)) {
-                    Toast.makeText(PaymentInteActivity.this, "Amount Required", Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), "Amount Required", Toast.LENGTH_LONG).show();
                 } else {
                     transactionAlertDialog.show();
                     handler.post(doStartTransaction);
@@ -769,7 +777,22 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
         PostTransactionRequest postTransactionRequest = postPayment.createPostTransactionRequest(transactionToken, paymentViewModel.getPaymentAmount().getValue(), apiKey, baseUrl);
         postPayment.doSale(postTransactionRequest, this);
+        cardPayment.setToken(transactionToken.getTransactionToken());
+        hitPaymentApi();
+    }
 
+    private void hitPaymentApi() {
+
+        cardPaymentViewModel.paymentRequest(cardPayment);
+        cardPaymentViewModel.getPaymentRequestResponse().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null) {
+                    Snackbar snackbar = Snackbar.make(requireView(), s, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
+        });
     }
 
     @Override
@@ -777,7 +800,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
         switch (cardProcessingResponse) {
             case TERMINATE:
-                PaymentInteActivity.this.runOnUiThread(new Runnable() {
+                requireActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         if (transactionAlertDialog != null && transactionAlertDialog.isShowing()) {
                             addPopupMessage(transactionAlertDialog, "Transaction terminated. Look for possible follow up action");
@@ -786,7 +809,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
                 });
                 break;
             default:
-                PaymentInteActivity.this.runOnUiThread(new Runnable() {
+                requireActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         payBtn.setEnabled(true);
                         if (transactionAlertDialog != null && transactionAlertDialog.isShowing()) {
@@ -811,10 +834,10 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
         // from Settings Fragment //
         if (transactionAlertDialog != null && transactionAlertDialog.isShowing()) {
-            addPopupMessage(transactionAlertDialog,message);
+            addPopupMessage(transactionAlertDialog, message);
         }
 
-        Toast.makeText(PaymentInteActivity.this, "Configuration Failed \uD83D\uDC4E", Toast.LENGTH_LONG).show();
+        Toast.makeText(requireContext(), "Configuration Failed \uD83D\uDC4E", Toast.LENGTH_LONG).show();
         info += "\nThe reader failed to configure. Error - " + message;
         handler.post(doUpdateStatus);
         handler.post(disablePopupWhenConfigurationFails);
@@ -824,7 +847,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
     public void lcdDisplay(int mode, String[] lines, int timeout) {
 
         if (lines != null && lines.length > 0) {
-            runOnUiThread(new Runnable() {
+            requireActivity().runOnUiThread(new Runnable() {
                 public void run() {
                     if (transactionAlertDialog != null && transactionAlertDialog.isShowing()) {
                         addPopupMessage(transactionAlertDialog, lines[0]);
@@ -834,7 +857,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
         }
 
         if (lines != null && lines.length > 0) {
-            PaymentInteActivity.this.runOnUiThread(new Runnable() {
+            requireActivity().runOnUiThread(new Runnable() {
                 public void run() {
 
                     if (lines[0].contains("TIME OUT")) {
@@ -863,7 +886,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
                             showPaymentSuccess(lines[0]);
                             runSampleReceipt(lines[0]);
                         } else if (lines[0].contains(checkReceiptMessage)) {
-                            Toast.makeText(PaymentInteActivity.this, "Sent PostReceipt", Toast.LENGTH_LONG).show();
+                            Toast.makeText(requireContext(), "Sent PostReceipt", Toast.LENGTH_LONG).show();
                             if (transactionAlertDialog != null && transactionAlertDialog.isShowing()) {
                                 closePopup();
                             }
@@ -896,7 +919,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
         updateReaderConnected("Disconnected");
 
 
-        PaymentInteActivity.this.runOnUiThread(new Runnable() {
+        requireActivity().runOnUiThread(new Runnable() {
             public void run() {
                 if (transactionAlertDialog != null && transactionAlertDialog.isShowing()) {
                     addPopupMessage(transactionAlertDialog, "Bluetooth disconnected. Press button on reader.");
@@ -926,7 +949,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
     @Override
     public void msgBatteryLow() {
-        Toast.makeText(PaymentInteActivity.this, "LOW BATTERY", Toast.LENGTH_LONG).show();
+        Toast.makeText(requireContext(), "LOW BATTERY", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -1038,7 +1061,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
 
     private void showPaymentSuccess(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PaymentInteActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton("\uD83D\uDCB3 OK", new DialogInterface.OnClickListener() {
@@ -1053,7 +1076,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
 
     private void showPaymentFailed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PaymentInteActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setMessage("Payment Failed")
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -1075,67 +1098,65 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
     };
 
 
-
-
     private void syncLocalCache() {
 
-        settingsViewModel.getProdEnvironment().observe(PaymentInteActivity.this, new Observer<Integer>() {
+        settingsViewModel.getProdEnvironment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer onOff) {
                 settingsProdEnvironment = onOff == 0 ? false : true;
-                LocalCache.setProdValue(getApplicationContext(), onOff);
+                LocalCache.setProdValue(requireContext(), onOff);
             }
         });
 
-        settingsViewModel.getBluetoothReader().observe(PaymentInteActivity.this, new Observer<Integer>() {
+        settingsViewModel.getBluetoothReader().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer onOff) {
                 settingsBluetoothReader = onOff == 0 ? false : true;
-                LocalCache.setBluetoothReaderValue(getApplicationContext(), onOff);
+                LocalCache.setBluetoothReaderValue(requireContext(), onOff);
             }
         });
-        settingsViewModel.getAudioJackReader().observe(PaymentInteActivity.this, new Observer<Integer>() {
+        settingsViewModel.getAudioJackReader().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer onOff) {
                 settingsAudioJackReader = onOff == 0 ? false : true;
-                LocalCache.setAudioJackValue(getApplicationContext(), onOff);
+                LocalCache.setAudioJackValue(requireContext(), onOff);
 
             }
         });
-        settingsViewModel.getEnableContactless().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getEnableContactless().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 enableContactless = enabled;
-                LocalCache.setEnableContactlessValue(getApplicationContext(), enabled);
+                LocalCache.setEnableContactlessValue(requireContext(), enabled);
             }
         });
-        settingsViewModel.getEnable2In1Mode().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getEnable2In1Mode().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 enable2In1Mode = enabled;
-                LocalCache.setEnable2InModeValue(getApplicationContext(), enabled);
+                LocalCache.setEnable2InModeValue(requireContext(), enabled);
             }
         });
-        settingsViewModel.getClearContactConfigurationCache().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getClearContactConfigurationCache().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 clearContactCache = enabled;
-                LocalCache.setClearContactConfigValue(getApplicationContext(), enabled);
+                LocalCache.setClearContactConfigValue(requireContext(), enabled);
             }
         });
-        settingsViewModel.getClearContactlessConfigurationCache().observe(PaymentInteActivity.this, new Observer<Boolean>() {
+        settingsViewModel.getClearContactlessConfigurationCache().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean enabled) {
                 clearContactlessCache = enabled;
-                LocalCache.setClearContactlessConfigValue(getApplicationContext(), enabled);
+                LocalCache.setClearContactlessConfigValue(requireContext(), enabled);
             }
         });
 
-        settingsViewModel.getLast5OfBluetoothReader().observe(PaymentInteActivity.this, new Observer<String>() {
+        settingsViewModel.getLast5OfBluetoothReader().observe(requireActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 lastFiveDigitEdit.setText(s);
-                LocalCache.setSelectedBluetoothDeviceLast5(getApplicationContext(), s);
+                LocalCache.setSelectedBluetoothDeviceLast5(requireContext(), s);
 
                 lastFiveDigitEdit.setSelection(s.length());
             }
@@ -1175,8 +1196,14 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
         if (settingsViewModel.getConfigureContact().getValue() || settingsViewModel.getConfigureContactless().getValue()) {
             return true;
         }
-        Toast.makeText(PaymentInteActivity.this, "Configuration not enabled", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "Configuration not enabled", Toast.LENGTH_SHORT).show();
         return false;
     }
+
+    public void setDefaultUi() {
+
+        ((MainActivity) requireActivity()).setDefaultUi(true, true, true);
+    }
+
 
 }

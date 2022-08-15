@@ -14,6 +14,7 @@ class Constants {
         const val USER="User"
         const val LOGOUT="Account/Logout"
         const val PAYMENT_REQUEST="Payment/Send-Payment-Request"
+        const val PAYMENT="Payment"
 
     }
 }

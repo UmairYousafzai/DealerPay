@@ -39,7 +39,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/department_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
@@ -51,8 +51,6 @@
                 app:boxCornerRadiusTopEnd="@dimen/_20sdp"
                 app:boxCornerRadiusTopStart="@dimen/_20sdp"
                 app:boxStrokeColor="@color/outer_line"
-                app:endIconDrawable="@drawable/ic_baseline_keyboard_arrow_down_24"
-                app:endIconMode="custom"
                 app:hintAnimationEnabled="false"
                 app:endIconTint="@color/green"
                 app:expandedHintEnabled="false"
@@ -100,6 +98,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/department_layout"
+                android:visibility="gone"
                 >
 
 
@@ -136,6 +135,7 @@
                 app:hintTextColor="@color/green"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/transaction_type_text_layout"
                 >
 
@@ -189,6 +189,7 @@
                         android:hint="@string/sale_amount"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="@dimen/_14sdp"
+                        android:inputType="numberDecimal"
                         />
 
                     <EditText
@@ -200,6 +201,7 @@
                         android:hint="@string/pay_amount"
                         android:textColor="@color/white"
                         android:paddingStart="@dimen/_6sdp"
+                        android:inputType="numberDecimal"
                         android:fontFamily="@font/sfprotext_regular"
                         android:textColorHint="@color/white"
                         app:layout_constraintEnd_toEndOf="@+id/et_saleAmount"
@@ -246,7 +248,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/sfprotext_regular"
-                        android:text="$10,000000"
+                        android:text="$0.0"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:layout_marginRight="@dimen/_12sdp"
@@ -260,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/_12sdp"
                         android:fontFamily="@font/sfprotext_regular"
-                        android:text="$10,000000"
+                        android:text="$0.0"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/textView4"
@@ -268,7 +270,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView4" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_total_amount"
+                        android:id="@+id/tv_total_amount"
                         android:layout_width="@dimen/_200sdp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
@@ -276,7 +278,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:backgroundTint="#203031"
                         android:padding="10dp"
-                        android:text="Total Amount :$20,00000"
+                        android:text="Total Amount :0.0"
                         android:textColor="@color/green"
                         app:cornerRadius="20dp"
                         app:layout_constraintBottom_toBottomOf="parent"

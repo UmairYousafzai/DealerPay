@@ -2,6 +2,7 @@ package com.moveitech.dealerpay.repository
 
 
 import com.moveitech.dealerpay.dataModel.request.LoginRequest
+import com.moveitech.dealerpay.dataModel.request.cardPayment.CardPayment
 import com.moveitech.dealerpay.dataModel.request.payment.PaymentRequest
 import com.moveitech.dealerpay.dataModel.response.BaseResponse
 import com.moveitech.dealerpay.dataModel.response.authentication.LoginResponse
@@ -37,6 +38,9 @@ class ApiDataRepository @Inject constructor(val api:Api){
 
   suspend fun paymentRequest(paymentRequest: PaymentRequest): ResultWrapper<String> {
         return safeApiCall(dispatcher) {api.paymentRequest(paymentRequest) }
+    }
+  suspend fun cardPayment(cardPayment: CardPayment): ResultWrapper<String> {
+        return safeApiCall(dispatcher) {api.cardPayment(cardPayment) }
     }
 
 

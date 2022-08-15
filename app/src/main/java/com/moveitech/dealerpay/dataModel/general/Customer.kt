@@ -6,95 +6,94 @@ import androidx.databinding.Observable
 import com.moveitech.dealerpay.BR
 import java.io.Serializable
 
- class Customer():Serializable, BaseObservable()
- {
-     @get:Bindable
-     var address1: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.address1)
+class Customer() : Serializable, BaseObservable() {
+    @get:Bindable
+    var address1: String = "address1"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.address1)
 
-             }
-         }
-     @get:Bindable
-     var address2: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.address2)
+            }
+        }
 
-             }
-         }
-     @get:Bindable
-     var city: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.city)
+    @get:Bindable
+    var address2: String = "address2"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.address2)
 
-             }
-         }
-     val companyName: String=""
-     @get:Bindable
-     var email: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.email)
+            }
+        }
 
-             }
-         }
-     @get:Bindable
-     var firstName: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.firstName)
+    @get:Bindable
+    var city: String = "city"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.city)
 
-             }
-         }
-     @get:Bindable
-     var lastName: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.lastName)
+            }
+        }
+    val companyName: String = "company name"
 
-             }
-         }
-     @get:Bindable
-     var phoneNumber: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.phoneNumber)
+    @get:Bindable
+    var email: String = "email"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.email)
 
-             }
-         }
-     @get:Bindable
-     var state: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.state)
+            }
+        }
 
-             }
-         }
-     @get:Bindable
-     var zipcode: String=""
-         set(value) {
-             if (field != value)
-             {
-                 field=value
-                 notifyPropertyChanged(BR.zipcode)
-             }
-         } }
+    @get:Bindable
+    var firstName: String = "firstname"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.firstName)
+
+            }
+        }
+
+    @get:Bindable
+    var lastName: String = "lastname"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.lastName)
+
+            }
+        }
+
+    @get:Bindable
+    var phoneNumber: String = "123 123 123"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.phoneNumber)
+
+            }
+        }
+
+    @get:Bindable
+    var state: String = "xyz"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.state)
+
+            }
+        }
+
+    @get:Bindable
+    var zip: String = "xyz"
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyPropertyChanged(BR.zip)
+            }
+        }
+}

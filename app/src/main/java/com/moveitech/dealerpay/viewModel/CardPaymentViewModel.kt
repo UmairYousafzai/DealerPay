@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.moveitech.dealerpay.adapter.TransactionAdapter
 import com.moveitech.dealerpay.dataModel.general.Customer
 import com.moveitech.dealerpay.dataModel.request.LoginRequest
+import com.moveitech.dealerpay.dataModel.request.cardPayment.CardPayment
 import com.moveitech.dealerpay.dataModel.request.payment.PaymentRequest
 import com.moveitech.dealerpay.dataModel.response.authentication.LoginResponse
 import com.moveitech.dealerpay.dataModel.response.transaction.TransactionResponse
@@ -17,22 +18,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PaymentRequestViewModel @Inject constructor(private val dataRepository: ApiDataRepository,private  val dbDataRepository: DBDataRepository) :
+class CardPaymentViewModel @Inject constructor(private val dataRepository: ApiDataRepository, private  val dbDataRepository: DBDataRepository) :
     BaseViewModel() {
 
     val paymentRequestResponse: MutableLiveData<String?> = MutableLiveData()
-    val customerLiveData: MutableLiveData<Customer> = MutableLiveData()
-    val firstName:ObservableField<String> = ObservableField()
-    var customer=Customer()
 
-    fun onClick() {
-        customerLiveData.value=customer
-    }
 
-     fun paymentRequest(paymentRequest: PaymentRequest) {
+     fun paymentRequest(cardPayment: CardPayment) {
         viewModelScope.launch {
             showProgressBar(true)
-            dataRepository.paymentRequest(paymentRequest)
+            dataRepository.cardPayment(cardPayment)
                 .let { response ->
                     showProgressBar(false)
 

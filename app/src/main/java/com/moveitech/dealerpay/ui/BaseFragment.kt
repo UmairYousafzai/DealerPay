@@ -1,25 +1,34 @@
 package com.moveitech.dealerpay.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.moveitech.dealerpay.LoginActivity
 import com.moveitech.dealerpay.MainActivity
+import com.moveitech.dealerpay.util.DataStoreHelper
 import com.moveitech.dealerpay.util.DialogUtils
 import com.moveitech.dealerpay.util.safeNavigate
 import com.moveitech.dealerpay.util.showSnackBar
 import com.moveitech.dealerpay.viewModel.BaseViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 abstract class BaseFragment <T: ViewBinding>:Fragment() {
 
     protected lateinit var binding:T
     lateinit var dialog: AlertDialog
+    @Inject
+    lateinit var storeHelper:DataStoreHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +76,16 @@ abstract class BaseFragment <T: ViewBinding>:Fragment() {
 
             progressBar.observe(viewLifecycleOwner) {
                     showProgressDialog(it)
+
+            }
+            sessionExpire.observe(viewLifecycleOwner)
+            {
+                lifecycleScope.launch {
+                    storeHelper.clear()
+                    val intent= Intent(requireActivity(),LoginActivity::class.java)
+                    requireActivity().startActivity(intent)
+                    requireActivity().finish()
+                }
 
             }
         }

@@ -1,20 +1,25 @@
 package com.moveitech.dealerpay.viewModel
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.moveitech.dealerpay.dataModel.request.LoginRequest
 import com.moveitech.dealerpay.dataModel.response.authentication.LoginResponse
+import com.moveitech.dealerpay.dataModel.response.user.Department
+import com.moveitech.dealerpay.dataModel.response.user.UserResponse
 import com.moveitech.dealerpay.network.ResultWrapper
 import com.moveitech.dealerpay.repository.ApiDataRepository
+import com.moveitech.dealerpay.repository.DBDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthenticationViewModel @Inject constructor(private val dataRepository: ApiDataRepository) :
+class AuthenticationViewModel @Inject constructor(private val apiDataRepository: ApiDataRepository,private val dbDataRepository: DBDataRepository) :
     BaseViewModel() {
 
+    private  val TAG = AuthenticationViewModel::class.java.simpleName
 
     val email: ObservableField<String> = ObservableField("")
     val passWord: ObservableField<String> = ObservableField("")
@@ -22,6 +27,7 @@ class AuthenticationViewModel @Inject constructor(private val dataRepository: Ap
     val userNameError: MutableLiveData<Boolean> = MutableLiveData()
     val passwordError: MutableLiveData<Boolean> = MutableLiveData()
     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+    val userResponse: MutableLiveData<UserResponse> = MutableLiveData()
 
 
 
@@ -56,7 +62,7 @@ class AuthenticationViewModel @Inject constructor(private val dataRepository: Ap
     private fun login(loginRequest: LoginRequest) {
         viewModelScope.launch {
             showProgressBar(true)
-            dataRepository.login(loginRequest)
+            apiDataRepository.login(loginRequest)
                 .let { response ->
                     showProgressBar(false)
 
@@ -78,4 +84,32 @@ class AuthenticationViewModel @Inject constructor(private val dataRepository: Ap
                 }
         }
     }
+
+    fun getUser() {
+        viewModelScope.launch {
+            showProgressBar(true)
+            apiDataRepository.getUser()
+                .let { response ->
+                    showProgressBar(false)
+
+                    when (response) {
+                        is ResultWrapper.Success -> {
+                            userResponse.value=response.value
+                        }
+                        else -> {
+                            handleErrorType(response)
+                        }
+                    }
+                }
+        }
+    }
+
+    fun saveDepartments(department: ArrayList<Department>)
+    {
+        viewModelScope.launch{
+            Log.e(TAG,"save Department function")
+            dbDataRepository.saveDepartment(department)
+        }
+    }
+
 }

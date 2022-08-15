@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.moveitech.dealerpay.application.DealerPayApplication
 import com.moveitech.dealerpay.dataModel.response.authentication.LoginResponse
+import com.moveitech.dealerpay.dataModel.response.user.UserResponse
 import com.moveitech.dealerpay.databinding.ActivityLoginBinding
+import com.moveitech.dealerpay.ui.PaymentInte.PaymentInteActivity
 import com.moveitech.dealerpay.util.DataStoreHelper
 import com.moveitech.dealerpay.util.DialogUtils
 import com.moveitech.dealerpay.util.showSnackBar
@@ -29,18 +31,18 @@ open class LoginActivity : AppCompatActivity() {
     @Inject
     lateinit var dataStoreHelper: DataStoreHelper
     private val viewModel: AuthenticationViewModel by viewModels()
-    private var flag=true
+    private var flag = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
             dataStoreHelper.isLogin.collect {
-                if (it&&flag) {
+                if (it && flag) {
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
-                }else{
-                    flag=false
+                } else {
+                    flag = false
                 }
             }
         }
@@ -65,7 +67,33 @@ open class LoginActivity : AppCompatActivity() {
             loginResponse.observe(this@LoginActivity) {
                 saveLoginResponseData(it)
             }
+            userResponse.observe(this@LoginActivity) {
+                saveUserData(it)
+            }
 
+
+        }
+
+    }
+
+    private fun saveUserData(userResponse: UserResponse?) {
+        if (userResponse != null) {
+            viewModel.saveDepartments(userResponse.enterprises[0].dealers[0].departments)
+            lifecycleScope.launch {
+                userResponse.enterprises[0].apply {
+                    dataStoreHelper.saveEnterprise(enterpriseId, name)
+
+                }
+                userResponse.enterprises[0].dealers[0].apply {
+                    dataStoreHelper.saveDealer(name, dealerId)
+                }
+                runOnUiThread {
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+
+            }
         }
 
     }
@@ -80,12 +108,10 @@ open class LoginActivity : AppCompatActivity() {
                     DealerPayApplication.Token = loginResponse.jwtToken
                     saveRefreshToken(loginResponse.refreshToken)
                     DealerPayApplication.refreshToken = loginResponse.refreshToken
-                    saveUserNAme(it.firstName+" "+it.lastName)
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    saveUserNAme(it.firstName + " " + it.lastName)
                 }
 
+                viewModel.getUser()
 
             }
         }

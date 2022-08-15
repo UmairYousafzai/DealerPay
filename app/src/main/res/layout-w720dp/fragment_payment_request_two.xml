@@ -61,6 +61,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
+                        android:selectAllOnFocus="true"
 
                         android:hint="Enter first name"
                         android:text="@={viewModel.customer.firstName}"
@@ -103,6 +104,8 @@
                         android:text="@={viewModel.customer.lastName}"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
+                        android:selectAllOnFocus="true"
+
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
 
@@ -139,6 +142,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
+                        android:selectAllOnFocus="true"
 
                         android:hint="Enter address"
                         android:text="@={viewModel.customer.address1}"
@@ -178,6 +182,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
+                        android:selectAllOnFocus="true"
 
                         android:hint="Enter Address"
                         android:text="@={viewModel.customer.address2}"
@@ -216,6 +221,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
+                        android:selectAllOnFocus="true"
 
                         android:hint="Enter city"
                         android:text="@={viewModel.customer.city}"
@@ -255,6 +261,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
+                        android:selectAllOnFocus="true"
 
                         android:hint="enter state"
                         android:text="@={viewModel.customer.state}"
@@ -294,8 +301,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Enter zipcode"
-                        android:text="@={viewModel.customer.zipcode}"
+                        android:text="@={viewModel.customer.zip}"
                         android:inputType="textEmailAddress"
+                        android:selectAllOnFocus="true"
 
                         android:maxLines="1"
                         android:textColor="@color/white"
@@ -335,6 +343,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
+                        android:selectAllOnFocus="true"
 
                         android:hint="xyz@email.com"
                         android:text="@={viewModel.customer.email}"
@@ -372,6 +381,7 @@
                         android:id="@+id/et_Phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:selectAllOnFocus="true"
 
                         android:hint="111 111 111"
                         android:text="@={viewModel.customer.phoneNumber}"

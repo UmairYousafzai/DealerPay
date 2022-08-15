@@ -44,7 +44,8 @@ fun Fragment.showSnackBar(message:String)
 {
     val snackbar = Snackbar
         .make(this.requireView(), message, Snackbar.LENGTH_LONG)
-    snackbar.show()}
+    snackbar.show()
+}
 fun Activity.showSnackBar(message:String)
 {
 
@@ -162,6 +163,6 @@ fun SearchView.observer(callBack:(String)->Unit)
 
 fun AutoCompleteTextView.setupAdapter(list:ArrayList<String>)
 {
-    val adapter = ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,list)
+    val adapter = ArrayAdapter(context,android.R.layout.simple_dropdown_item_1line,list)
     setAdapter(adapter)
 }

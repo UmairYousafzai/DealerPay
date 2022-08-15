@@ -40,7 +40,8 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/department_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
@@ -52,8 +53,6 @@
                 app:boxCornerRadiusTopEnd="@dimen/_20sdp"
                 app:boxCornerRadiusTopStart="@dimen/_20sdp"
                 app:boxStrokeColor="@color/white"
-                app:endIconDrawable="@drawable/ic_baseline_keyboard_arrow_down_24"
-                app:endIconMode="custom"
                 app:hintAnimationEnabled="false"
                 app:endIconTint="@color/green"
                 app:expandedHintEnabled="false"
@@ -101,6 +100,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/department_layout"
+                android:visibility="gone"
+
                 >
 
 
@@ -138,6 +139,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/transaction_type_text_layout"
+                android:visibility="gone"
                 >
 
 
@@ -183,6 +185,7 @@
                         android:paddingStart="@dimen/_8sdp"
                         android:fontFamily="@font/sfprotext_regular"
                         android:background="@drawable/edit_text_bg"
+                        android:inputType="numberDecimal"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -200,6 +203,7 @@
                         android:background="@drawable/edit_text_bg"
                         android:hint="@string/pay_amount"
                         android:textColor="@color/white"
+                        android:inputType="numberDecimal"
                         android:paddingStart="@dimen/_6sdp"
                         android:fontFamily="@font/sfprotext_regular"
                         android:textColorHint="@color/white"
@@ -269,7 +273,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView4" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_total_amount"
+                        android:id="@+id/tv_total_amount"
                         android:layout_width="@dimen/_200sdp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"

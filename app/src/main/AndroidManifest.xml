@@ -35,21 +35,25 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.DealerPay">
-        <activity
-            android:name=".ui.PaymentInte.PaymentInteActivity"
-            android:exported="false"
-            />
-        <activity
-            android:name=".IDTECHPack.MainActivityIdTech"
-            android:exported="false"
-            android:label="@string/title_activity_main_id_tech"
-            android:theme="@style/Theme.DealerPay.NoActionBar" />
+<!--        <activity-->
+<!--            android:name=".ui.PaymentInte.PaymentInteActivity"-->
+<!--            android:exported="false"-->
+<!--            />-->
+<!--        <activity-->
+<!--            android:name=".IDTECHPack.MainActivityIdTech"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_main_id_tech"-->
+<!--            android:theme="@style/Theme.DealerPay.NoActionBar" />-->
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/SplashTheme"
+        />
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -21,7 +21,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/department_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
@@ -33,8 +33,6 @@
                 app:boxCornerRadiusTopEnd="@dimen/_20sdp"
                 app:boxCornerRadiusTopStart="@dimen/_20sdp"
                 app:boxStrokeColor="@color/outer_line"
-                app:endIconDrawable="@drawable/ic_baseline_keyboard_arrow_down_24"
-                app:endIconMode="custom"
                 app:endIconTint="@color/green"
                 app:expandedHintEnabled="false"
                 app:hintEnabled="true"
@@ -50,8 +48,6 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:hint="@string/select_an_item"
-                    android:maxLines="1"
-                    android:inputType="textEmailAddress"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white" />
 
@@ -77,6 +73,7 @@
                 app:expandedHintEnabled="false"
                 app:hintEnabled="true"
                 app:hintTextColor="@color/green"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/department_layout">
@@ -117,6 +114,7 @@
                 app:hintTextColor="@color/green"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/transaction_type_text_layout">
 
 
@@ -194,7 +192,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/email_text_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
@@ -206,8 +204,6 @@
                 app:boxCornerRadiusTopEnd="@dimen/_20sdp"
                 app:boxCornerRadiusTopStart="@dimen/_20sdp"
                 app:boxStrokeColor="@color/outer_line"
-                app:endIconDrawable="@drawable/ic_baseline_alternate_email_24"
-                app:endIconMode="custom"
                 app:endIconTint="@color/green"
                 app:expandedHintEnabled="false"
                 app:hintEnabled="true"
@@ -216,16 +212,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rectangle_4">
 
-
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
+                    android:padding="5dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white" />
+                    android:textColorHint="@color/white"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
