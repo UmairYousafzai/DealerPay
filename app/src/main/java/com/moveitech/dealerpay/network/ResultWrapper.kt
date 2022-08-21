@@ -8,3 +8,4 @@ sealed class ResultWrapper<out T> {
     object NetworkError: ResultWrapper<Nothing>()
     object ConnectNetworkError: ResultWrapper<Nothing>()
 }
+//test
