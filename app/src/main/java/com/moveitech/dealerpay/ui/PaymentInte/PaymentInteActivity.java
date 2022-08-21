@@ -61,8 +61,6 @@ import com.moveitech.dealerpay.ui.BottomSheetS.BottomSheetAmountFragment;
 
 public class PaymentInteActivity extends AppCompatActivity implements BottomSheetAmountFragment.OnBottomSheetClick, BluetoothScanListener, PublicOnReceiverListener, HasManualTokenizingSupport {
 
-//    nfodjodk@gmail.com
-//    FOvHaa3u! 9w!lly
     private Toolbar toolbar;
     private AppCompatImageView backImg;
     private CardView amountCard;
@@ -86,7 +84,6 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
     private Boolean clearContactCache = false;
     private Boolean clearContactlessCache = false;
     private String last5OfBluetoothReader = null;
-    private String devicefullname = null;
     private Boolean runningManualEntry = false;
 
     private Boolean runningTransaction = false;
@@ -215,10 +212,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
             @Override
             public void onClick(View view) {
 
-                System.out.println("LAST FIVE DIGIT: " + last5OfBluetoothReader);
-
-
-                String s = last5OfBluetoothReader;
+                String s = lastFiveDigitEdit.getText().toString().trim();
 
                 oldAmountToShow = amountTxt.getText().toString().trim();
 
@@ -237,11 +231,10 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
 
                 last5OfBluetoothReader = s;
-                devicefullname =  Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader;
-
                 settingsViewModel.getLast5OfBluetoothReader().setValue(s);
                 Common.setBLEDeviceName(s);
                 LocalCache.setSelectedBluetoothDeviceLast5(getApplicationContext(), last5OfBluetoothReader);
+
 
                 // start doing transaction here //
 
@@ -280,6 +273,7 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
 
                     if (settingsBluetoothReader) {
 
+                        System.out.println("DEVICE DISSCONNECTED ELSE IF: " + last5OfBluetoothReader + " Sett:" + settingsViewModel.getLast5OfBluetoothReader().getValue());
                         bluetoothLeService.scan(Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader);
                         Toast.makeText(PaymentInteActivity.this, "Connecting Bluetooth Reader Ending In " + last5OfBluetoothReader, Toast.LENGTH_LONG).show();
 
@@ -411,13 +405,10 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
         settingsViewModel.getLast5OfBluetoothReader().observe(PaymentInteActivity.this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-
                 last5OfBluetoothReader = s;
-                devicefullname = Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader;
                 Common.setBLEDeviceName(s);
             }
         });
-
 
     }
 
@@ -446,9 +437,8 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
         settingsViewModel.getClearContactConfigurationCache().setValue(false);
         settingsViewModel.getEnable2In1Mode().setValue(false);
 
-//        String s = lastFiveDigitEdit.getText().toString().trim();
-
-        settingsViewModel.getLast5OfBluetoothReader().setValue(last5OfBluetoothReader);
+        String s = lastFiveDigitEdit.getText().toString().trim();
+        settingsViewModel.getLast5OfBluetoothReader().setValue(s);
 
     }
 
@@ -1144,16 +1134,10 @@ public class PaymentInteActivity extends AppCompatActivity implements BottomShee
         settingsViewModel.getLast5OfBluetoothReader().observe(PaymentInteActivity.this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-
-                last5OfBluetoothReader = s;
-
-                devicefullname = Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader;
-
-                lastFiveDigitEdit.setText(devicefullname);
-
+                lastFiveDigitEdit.setText(s);
                 LocalCache.setSelectedBluetoothDeviceLast5(getApplicationContext(), s);
 
-                lastFiveDigitEdit.setSelection(devicefullname.length());
+                lastFiveDigitEdit.setSelection(s.length());
             }
         });
     }

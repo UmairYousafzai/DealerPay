@@ -1,17 +1,13 @@
 package com.moveitech.dealerpay.ui.PaymentInte;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +24,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.Navigation;
 
 import com.clearent.idtech.android.PublicOnReceiverListener;
 import com.clearent.idtech.android.domain.CardProcessingResponse;
@@ -99,8 +93,6 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
     private Boolean clearContactCache = false;
     private Boolean clearContactlessCache = false;
     private String last5OfBluetoothReader = null;
-    private String devicefullname = null;
-
     private Boolean runningManualEntry = false;
 
     private Boolean runningTransaction = false;
@@ -140,6 +132,7 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
         // tO SHOW ACTIVITY ON FULL SCREEN //
 //        Window w = getWindow();
 //        w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 
         bluetoothLeService = new BluetoothLeService(this, Constants.BLUETOOTH_SCAN_PERIOD);
 
@@ -185,12 +178,13 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
             cardPayment = getArguments().getParcelable("cardPayment");
             if (cardPayment != null) {
                 int total = cardPayment.getSaleAmount() + cardPayment.getPayShareAmount();
-                oldAmountToShow = ""+total;
+                oldAmountToShow = "Total Amount : $" + total;
                 paymentViewModel.getPaymentAmount().setValue(String.valueOf(total));
 
             }else
             {
-                oldAmountToShow = "0.0" ;
+                oldAmountToShow = "Total Amount : $0.0" +
+                        "" ;
 
             }
         }
@@ -224,41 +218,26 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
         payBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                String s = last5OfBluetoothReader;
-
                 String s = lastFiveDigitEdit.getText().toString().trim();
 
                 oldAmountToShow = amountTxt.getText().toString().trim();
 
 
-
                 if (TextUtils.isEmpty(amountTxt.getText().toString().trim())) {
+
                     Toast.makeText(requireContext(), "Amount is missing", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(s)) {
-                    Toast.makeText(requireContext(), "Device Serial Number is missing", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Last five digits of bluetooth reader are missing", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                String[] devArr = s.split("-");
 
-                String start = devArr[0];
-                String mid = devArr[1];
-                String end = devArr[2];
-
-                System.out.println("START: " + start + " MID: " + mid + " END: " + end);
-
-                last5OfBluetoothReader = end;
-
-                devicefullname =  Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader;
-
-                settingsViewModel.getLast5OfBluetoothReader().setValue(last5OfBluetoothReader);
-
+                last5OfBluetoothReader = s;
+                settingsViewModel.getLast5OfBluetoothReader().setValue(s);
                 Common.setBLEDeviceName(s);
-
                 LocalCache.setSelectedBluetoothDeviceLast5(requireContext(), last5OfBluetoothReader);
 
 
@@ -298,11 +277,7 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
                     System.out.println("SETTINGSBLUETOOTHREADER: " + settingsBluetoothReader);
 
                     if (settingsBluetoothReader) {
-                        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
 
-                            showSnackbar("Bluetooth Permission required");
-                            return;
-                        }
                         System.out.println("DEVICE DISSCONNECTED ELSE IF: " + last5OfBluetoothReader + " Sett:" + settingsViewModel.getLast5OfBluetoothReader().getValue());
                         bluetoothLeService.scan(Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader);
                         Toast.makeText(requireContext(), "Connecting Bluetooth Reader Ending In " + last5OfBluetoothReader, Toast.LENGTH_LONG).show();
@@ -440,12 +415,8 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
         settingsViewModel.getLast5OfBluetoothReader().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-
                 last5OfBluetoothReader = s;
-
-                devicefullname =  Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader;
-
-                Common.setBLEDeviceName(last5OfBluetoothReader);
+                Common.setBLEDeviceName(s);
             }
         });
 
@@ -476,8 +447,8 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
         settingsViewModel.getClearContactConfigurationCache().setValue(false);
         settingsViewModel.getEnable2In1Mode().setValue(false);
 
-//        String s = lastFiveDigitEdit.getText().toString().trim();
-        settingsViewModel.getLast5OfBluetoothReader().setValue(last5OfBluetoothReader);
+        String s = lastFiveDigitEdit.getText().toString().trim();
+        settingsViewModel.getLast5OfBluetoothReader().setValue(s);
 
     }
 
@@ -817,17 +788,11 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
             @Override
             public void onChanged(String s) {
                 if (s != null) {
-                  showSnackbar(s);
-                    Navigation.findNavController(requireView()).navigate(PaymentInteFragmentDirections.actionPaymentInteFragmentToHomeFragment());
+                    Snackbar snackbar = Snackbar.make(requireView(), s, Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
             }
         });
-    }
-
-    private void showSnackbar(String s) {
-
-        Snackbar snackbar = Snackbar.make(requireView(), s, Snackbar.LENGTH_LONG);
-        snackbar.show();
     }
 
     @Override
@@ -1190,16 +1155,10 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
         settingsViewModel.getLast5OfBluetoothReader().observe(requireActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                lastFiveDigitEdit.setText(s);
+                LocalCache.setSelectedBluetoothDeviceLast5(requireContext(), s);
 
-                last5OfBluetoothReader = s;
-
-                devicefullname = Constants.BLUETOOTH_READER_PREFIX + "-" + last5OfBluetoothReader;
-
-                LocalCache.setSelectedBluetoothDeviceLast5(requireContext(), last5OfBluetoothReader);
-
-                lastFiveDigitEdit.setText(devicefullname);
-
-                lastFiveDigitEdit.setSelection(devicefullname.length());
+                lastFiveDigitEdit.setSelection(s.length());
             }
         });
     }
@@ -1246,22 +1205,5 @@ public class PaymentInteFragment extends Fragment implements BottomSheetAmountFr
         ((MainActivity) requireActivity()).setDefaultUi(true, true, true);
     }
 
-
-    TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
 
 }

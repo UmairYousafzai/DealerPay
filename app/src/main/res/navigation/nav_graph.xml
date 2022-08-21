@@ -79,21 +79,15 @@
         <argument
             android:name="paymentRequestModel"
             app:argType="com.moveitech.dealerpay.dataModel.request.payment.PaymentRequest" />
-        <action
-            android:id="@+id/action_paymentReqTwoFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/paymentInteFragment"
         android:name="com.moveitech.dealerpay.ui.PaymentInte.PaymentInteFragment"
-        android:label="Dealer Pay"
+        android:label="PaymentInteFragment"
         tools:layout="@layout/activity_payment_inte">
         <argument
             android:name="model"
             app:argType="com.moveitech.dealerpay.dataModel.request.cardPayment.CardPayment"
   />
-        <action
-            android:id="@+id/action_paymentInteFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

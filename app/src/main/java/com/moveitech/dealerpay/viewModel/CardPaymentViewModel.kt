@@ -33,7 +33,7 @@ class CardPaymentViewModel @Inject constructor(private val dataRepository: ApiDa
 
                     when (response) {
                         is ResultWrapper.Success -> {
-                            paymentRequestResponse.value="Success"
+                            paymentRequestResponse.value=response.value
                         }
                         else -> {
                             handleErrorType(response)
