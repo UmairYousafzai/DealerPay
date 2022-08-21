@@ -16,11 +16,15 @@
 
 package com.moveitech.dealerpay.IDTECHPack.reader.blutooth;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanSettings;
+import android.content.pm.PackageManager;
 import android.os.Handler;
+
+import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,8 @@ public class BluetoothLeService implements BluetoothScanListener {
         bluetoothScanningInProcess = false;
 
         try {
+
+
             bluetoothAdapter.getBluetoothLeScanner().stopScan(bluetoothScanCallback);
             bluetoothScanListener.handle(BluetoothScanMessage.SCAN_STOPPED);
         }catch (NullPointerException ex) {

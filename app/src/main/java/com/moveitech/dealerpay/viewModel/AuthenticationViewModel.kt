@@ -108,6 +108,7 @@ class AuthenticationViewModel @Inject constructor(private val apiDataRepository:
     {
         viewModelScope.launch{
             Log.e(TAG,"save Department function")
+            dbDataRepository.deleteDepartment()
             dbDataRepository.saveDepartment(department)
         }
     }

@@ -1,5 +1,6 @@
 package com.moveitech.dealerpay.viewModel
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -71,6 +72,8 @@ class UserViewModel @Inject constructor(private val dataRepository: ApiDataRepos
     fun saveDepartments(department: ArrayList<Department>)
     {
         viewModelScope.launch{
+            dbDataRepository.deleteDepartment()
+            Log.e("UserViewMOdel","department===> save department")
             dbDataRepository.saveDepartment(department)
         }
     }

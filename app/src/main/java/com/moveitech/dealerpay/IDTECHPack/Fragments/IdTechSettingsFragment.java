@@ -258,6 +258,7 @@ public class IdTechSettingsFragment extends Fragment implements PublicOnReceiver
                 LocalCache.setSelectedBluetoothDeviceLast5(getActivity().getApplicationContext(), s);
             }
         });
+
     }
 
     @Override

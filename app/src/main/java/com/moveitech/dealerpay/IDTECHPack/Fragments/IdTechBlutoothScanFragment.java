@@ -93,7 +93,10 @@ public class IdTechBlutoothScanFragment extends ListFragment implements Bluetoot
         if(bluetoothDevice.getName() != null && !"".equals(bluetoothDevice.getName()) && bluetoothDevice.getName().length() > 5) {
             String last5 = bluetoothDevice.getName().substring(bluetoothDevice.getName().length() - 5);
             settingsViewModel.setLast5OfBluetoothReader(last5OfBluetoothReader);
+
+            System.out.println("BLUTTOOTH DEVICE NAME IS: " + bluetoothDevice.getName());
             LocalCache.setSelectedBluetoothDeviceLast5(getActivity().getApplicationContext(), last5);
+
         }
 
         if (bluetoothLeService.isBluetoothScanningInProcess()) {

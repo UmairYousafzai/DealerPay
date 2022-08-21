@@ -36,10 +36,10 @@ class ApiDataRepository @Inject constructor(val api:Api){
         return safeApiCall(dispatcher) {api.logout() }
     }
 
-  suspend fun paymentRequest(paymentRequest: PaymentRequest): ResultWrapper<String> {
+  suspend fun paymentRequest(paymentRequest: PaymentRequest): ResultWrapper<Unit> {
         return safeApiCall(dispatcher) {api.paymentRequest(paymentRequest) }
     }
-  suspend fun cardPayment(cardPayment: CardPayment): ResultWrapper<String> {
+  suspend fun cardPayment(cardPayment: CardPayment): ResultWrapper<Unit> {
         return safeApiCall(dispatcher) {api.cardPayment(cardPayment) }
     }
 

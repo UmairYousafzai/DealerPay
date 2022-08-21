@@ -38,7 +38,7 @@ class PaymentRequestViewModel @Inject constructor(private val dataRepository: Ap
 
                     when (response) {
                         is ResultWrapper.Success -> {
-                            paymentRequestResponse.value=response.value
+                            paymentRequestResponse.value="Success"
                         }
                         else -> {
                             handleErrorType(response)

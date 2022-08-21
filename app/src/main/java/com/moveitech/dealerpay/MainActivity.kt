@@ -2,10 +2,11 @@ package com.moveitech.dealerpay
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,7 +22,6 @@ import com.moveitech.dealerpay.util.DataStoreHelper
 import com.moveitech.dealerpay.util.gone
 import com.moveitech.dealerpay.util.visible
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,12 +29,18 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    companion object{
-        const val  MY_PERMISSIONS_REQUEST_BLUETOOTH = 1
-        const val  MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 2
-        const val  MY_PERMISSIONS_REQUEST_FINE_LOCATION = 3
+    companion object {
+        const val MY_PERMISSIONS_REQUEST_BLUETOOTH = 1
+        const val MY_PERMISSIONS_REQUEST_COARSE_LOCATION = 2
+        const val MY_PERMISSIONS_REQUEST_FINE_LOCATION = 3
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    private val ANDROID_12_BLE_PERMISSIONS = arrayOf(
+        Manifest.permission.BLUETOOTH_SCAN,
+        Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.BLUETOOTH
+    )
 
     @Inject
     lateinit var dataStoreHelper: DataStoreHelper
@@ -69,8 +75,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     private fun btnListener() {
 
         binding.ivProfile.setOnClickListener {
@@ -83,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         val headerBinding: NavigationDrawerHeaderBinding =
             NavigationDrawerHeaderBinding.bind(headerView)
         lifecycleScope.launch {
-            dataStoreHelper.userName.collect{
+            dataStoreHelper.userName.collect {
                 headerBinding.tvName.text = it
             }
         }
@@ -92,7 +96,6 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.settingsFragment)
         }
     }
-
 
 
     private fun setUpNavigation() {
@@ -113,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         setupWithNavController(binding.toolbar, navController, appBarConfiguration)
 
 
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
 
                 R.id.homeFragment -> {
@@ -186,7 +189,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun requestPermissions() {
 
         println("REQUEST PERMISSION IS CALLED")
@@ -215,7 +217,7 @@ class MainActivity : AppCompatActivity() {
                 System.out.println("REQUEST BLUETOOTH PERMISSION IS CALLED")
 
                 ActivityCompat.requestPermissions(
-                    this, arrayOf(Manifest.permission.BLUETOOTH),
+                    this, ANDROID_12_BLE_PERMISSIONS,
                     MainActivity.MY_PERMISSIONS_REQUEST_BLUETOOTH
                 )
 

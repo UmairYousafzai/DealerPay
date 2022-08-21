@@ -70,6 +70,8 @@ public class SettingsViewModel extends AndroidViewModel {
 
     }
 
+
+
     public MutableLiveData<String> getLast5OfBluetoothReader() {
         return last5OfBluetoothReader;
     }

@@ -25,34 +25,37 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-fun View.hide()
-{
-    visibility=View.INVISIBLE
-}fun View.visible()
-{
-    visibility=View.VISIBLE
-}fun View.gone()
-{
-    visibility=View.GONE
-}
-fun Fragment.showToast(message:String)
-{
-    Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
+fun View.hide() {
+    visibility = View.INVISIBLE
 }
 
-fun Fragment.showSnackBar(message:String)
-{
+fun View.visible() {
+    visibility = View.VISIBLE
+}
+
+fun View.gone() {
+    visibility = View.GONE
+}
+
+fun Fragment.showToast(message: String) {
+    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+}
+
+fun Fragment.showSnackBar(message: String) {
     val snackbar = Snackbar
         .make(this.requireView(), message, Snackbar.LENGTH_LONG)
     snackbar.show()
 }
-fun Activity.showSnackBar(message:String)
-{
+
+fun Activity.showSnackBar(message: String) {
 
     val snackbar = Snackbar
-        .make(    findViewById<View>(android.R.id.content).rootView
-            , message, Snackbar.LENGTH_LONG)
-    snackbar.show()}
+        .make(
+            findViewById<View>(android.R.id.content).rootView, message, Snackbar.LENGTH_LONG
+        )
+    snackbar.show()
+}
+
 fun Fragment.showAlertDialog(msg: String) {
     var newMessage = msg
     if (newMessage.isEmpty()) {
@@ -72,7 +75,7 @@ fun Context.isLocationEnabled(): Boolean {
 fun getDate(): String {
     val calendar = Calendar.getInstance()
 
-    val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"	)
+    val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     return format.format(calendar.time)
 }
 
@@ -100,14 +103,12 @@ fun Context.getCompleteAddressString(LATITUDE: Double, LONGITUDE: Double): Strin
 }
 
 
-fun Fragment.hideToolbar()
-{
-    ( requireActivity() as AppCompatActivity).supportActionBar?.hide()
+fun Fragment.hideToolbar() {
+    (requireActivity() as AppCompatActivity).supportActionBar?.hide()
 }
 
-fun Fragment.showToolbar()
-{
-    ( requireActivity() as AppCompatActivity).supportActionBar?.show()
+fun Fragment.showToolbar() {
+    (requireActivity() as AppCompatActivity).supportActionBar?.show()
 }
 
 fun NavController.safeNavigate(direction: NavDirections) {
@@ -128,14 +129,16 @@ fun Fragment.closeKeyBoard() {
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
+
 fun stringToFormatDate(date: String?): String {
     var date1: Date? = null
     var formatDate = ""
     try {
 
         date1 = date?.let {
-            val array=it.split("+")
-            SimpleDateFormat("YYYY-MM-DD'T'hh:mm:ss").parse(array[0]) }
+            val array = it.split("+")
+            SimpleDateFormat("YYYY-MM-DD'T'hh:mm:ss").parse(array[0])
+        }
     } catch (e: ParseException) {
         e.printStackTrace()
     }
@@ -146,9 +149,8 @@ fun stringToFormatDate(date: String?): String {
     return formatDate
 }
 
-fun SearchView.observer(callBack:(String)->Unit)
-{
-    this.setOnQueryTextListener(object :SearchView.OnQueryTextListener{
+fun SearchView.observer(callBack: (String) -> Unit) {
+    this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
 
             return false
@@ -161,8 +163,7 @@ fun SearchView.observer(callBack:(String)->Unit)
     })
 }
 
-fun AutoCompleteTextView.setupAdapter(list:ArrayList<String>)
-{
-    val adapter = ArrayAdapter(context,android.R.layout.simple_dropdown_item_1line,list)
+fun AutoCompleteTextView.setupAdapter(list: ArrayList<String>) {
+    val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, list)
     setAdapter(adapter)
 }

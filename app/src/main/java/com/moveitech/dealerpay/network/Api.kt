@@ -43,10 +43,10 @@ interface Api {
 
 
     @POST(PAYMENT_REQUEST)
-    suspend fun paymentRequest(@Body paymentRequest: PaymentRequest):String
+    suspend fun paymentRequest(@Body paymentRequest: PaymentRequest):Unit
 
    @POST(PAYMENT)
-    suspend fun cardPayment(@Body cardPayment: CardPayment):String
+    suspend fun cardPayment(@Body cardPayment: CardPayment):Unit
 
 
 }
